@@ -4,6 +4,7 @@ import { AdminSidebar } from "@/components/layout/AdminSidebar";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Bell, Search, TrendingUp, Users, ShoppingBag, Table2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function AdminDashboard() {
   const stats = [

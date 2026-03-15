@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Read disinfection<{
+}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
