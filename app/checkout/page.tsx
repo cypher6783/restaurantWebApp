@@ -23,12 +23,37 @@ export default function CheckoutPage() {
   const deliveryFee = 1500;
   const total = cartTotal + deliveryFee;
 
-  function handlePlaceOrder() {
+  const [error, setError] = useState("");
+
+  async function handlePlaceOrder() {
     setPlacing(true);
-    setTimeout(() => {
+    setError("");
+
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items,
+          total,
+          address,
+          paymentMethod: selectedPayment,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Order placement failed");
+      }
+
       clearCart();
       router.push("/checkout/confirmation");
-    }, 1400);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setPlacing(false);
+    }
   }
 
   return (
@@ -36,6 +61,11 @@ export default function CheckoutPage() {
       <Header showBack title="Checkout" />
 
       <main className="px-6 py-6 space-y-6">
+        {error && (
+          <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] font-black tracking-widest text-center uppercase">
+            {error}
+          </div>
+        )}
         {/* Delivery Address */}
         <section className="bg-white rounded-[28px] p-6 shadow-sm border border-primary/5">
           <div className="flex items-center justify-between mb-4">

@@ -15,19 +15,33 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = (e: React.FormEvent) => {
+  const [error, setError] = useState("");
+
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
 
-    // Simulate API call
-    setTimeout(() => {
-      localStorage.setItem("refined_user", JSON.stringify({
-        name: name || "New Guest",
-        email: email || "guest@example.com",
-        initials: name ? name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "NG"
-      }));
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Registration failed");
+      }
+
+      localStorage.setItem("refined_user", JSON.stringify(data));
       router.push("/");
-    }, 1200);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -61,6 +75,12 @@ export default function RegisterPage() {
             <h2 className="text-3xl font-serif font-bold text-primary mb-2 italic">Join the Table</h2>
             <p className="text-muted text-sm font-medium">Create your refined dining profile</p>
           </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] font-black tracking-widest text-center uppercase">
+              {error}
+            </div>
+          )}
 
           <form className="space-y-4" onSubmit={handleRegister}>
             <div className="space-y-1.5">

@@ -13,20 +13,33 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     
-    // Simulate API call
-    setTimeout(() => {
-      localStorage.setItem("refined_user", JSON.stringify({
-        name: "Adesua Etomi",
-        email: email || "adesua@example.com",
-        initials: "AE"
-      }));
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Login failed");
+      }
+
+      localStorage.setItem("refined_user", JSON.stringify(data));
       router.push("/");
-    }, 1200);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,6 +63,12 @@ export default function LoginPage() {
             <h2 className="text-3xl font-serif font-bold text-primary mb-2 italic">Welcome Back</h2>
             <p className="text-muted text-sm font-medium">Sign in to your refined dining experience</p>
           </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-xs font-bold text-center animate-shake">
+              {error}
+            </div>
+          )}
 
           <form className="space-y-6" onSubmit={handleLogin}>
             <div className="space-y-2">

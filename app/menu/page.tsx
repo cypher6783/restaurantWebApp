@@ -7,165 +7,33 @@ import { Badge } from "@/components/ui/Badge";
 import { Search, Filter, Star, Clock, Flame, Utensils, Heart, ShoppingBag, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCart } from "@/lib/cartContext";
 import { cn } from "@/lib/utils";
 
 const categories = ["All", "Main Course", "Traditional", "Seafood", "Desserts"];
-
-const dishes = [
-  {
-    id: "smokey-jollof",
-    name: "Smokey Jollof Rice",
-    description: "Authentic firewood-smoked Jollof rice served with grilled chicken and plantain.",
-    price: "₦7,500",
-    rating: "4.9",
-    reviews: 142,
-    time: "25-30 mins",
-    category: "Main Course",
-    image: "/images/jollof-rice.jpg",
-    special: "CHEF'S SPECIAL"
-  },
-  {
-    id: "peppered-snail",
-    name: "Peppered Snail",
-    description: "Jumbo forest snails sautéed in a spicy habanero and onion reduction.",
-    price: "₦8,500",
-    rating: "4.8",
-    reviews: 89,
-    time: "15-20 mins",
-    category: "Traditional",
-    image: "/images/peppered-snail.jpeg",
-  },
-  {
-    id: "egusi-soup",
-    name: "Egusi Soup & Pounded Yam",
-    description: "Melon seed soup with assorted meats and pan-fried spinach.",
-    price: "₦9,000",
-    rating: "5.0",
-    reviews: 215,
-    time: "30-35 mins",
-    category: "Traditional",
-    image: "/images/egusi-pounded-yam.jpg",
-  },
-  {
-    id: "suya",
-    name: "Gourmet Beef Suya",
-    description: "Spicy grilled beef skewers seasoned with traditional Yaji spice and served with onions.",
-    price: "₦5,500",
-    rating: "4.9",
-    reviews: 312,
-    time: "15-20 mins",
-    category: "Traditional",
-    image: "/images/suya.jpg",
-  },
-  {
-    id: "abacha",
-    name: "African Salad (Abacha)",
-    description: "Traditional cassava salad with ugba, garden eggs, and fried fish.",
-    price: "₦6,500",
-    rating: "4.7",
-    reviews: 67,
-    time: "20-25 mins",
-    category: "Traditional",
-    image: "/images/abacha.jpeg",
-  },
-  {
-    id: "fried-rice",
-    name: "Special Fried Rice",
-    description: "Basmati rice stir-fried with seasonal vegetables and liver chunks.",
-    price: "₦7,000",
-    rating: "4.6",
-    reviews: 112,
-    time: "25-30 mins",
-    category: "Main Course",
-    image: "/images/fried-rice.jpeg",
-  },
-  {
-    id: "spaghetti-chicken",
-    name: "Spaghetti with Chicken",
-    description: "Italian spaghetti tossed in a rich Nigerian pepper sauce with grilled chicken.",
-    price: "₦8,000",
-    rating: "4.8",
-    reviews: 95,
-    time: "20-25 mins",
-    category: "Main Course",
-    image: "/images/spaghetti-chicken.jpeg",
-  },
-  {
-    id: "amala-ewedu",
-    name: "Amala and Ewedu",
-    description: "Smooth yam flour pudding served with jute leaf soup and gbegiri.",
-    price: "₦5,500",
-    rating: "4.9",
-    reviews: 184,
-    time: "15-20 mins",
-    category: "Traditional",
-    image: "/images/amala-ewedu.jpg",
-  },
-  {
-    id: "banga-soup",
-    name: "Banga Soup and Starch",
-    description: "Delta-style palm nut soup enriched with local spices and fresh seafood.",
-    price: "₦9,500",
-    rating: "4.8",
-    reviews: 43,
-    time: "35-40 mins",
-    category: "Traditional",
-    image: "/images/banga-soup-starch.jpeg",
-  },
-  {
-    id: "efo-riro",
-    name: "Efo Riro and Fufu",
-    description: "Rich vegetable soup cooked with locust beans and assorted protein.",
-    price: "₦8,500",
-    rating: "4.7",
-    reviews: 128,
-    time: "25-30 mins",
-    category: "Traditional",
-    image: "/images/eforiro.jpg",
-  },
-  {
-    id: "grilled-fish",
-    name: "Gourmet Grilled Fish",
-    description: "Slow-roasted croaker fish marinated in our signature spicy herb blend.",
-    price: "₦15,000",
-    rating: "4.9",
-    reviews: 56,
-    time: "45-50 mins",
-    category: "Seafood",
-    image: "/images/grilled-fish.jpg",
-  },
-  {
-    id: "vegetable-soup",
-    name: "Edikang Ikong",
-    description: "Nutrient-dense vegetable soup with waterleaf and fluted pumpkin leaves.",
-    price: "₦10,000",
-    rating: "4.9",
-    reviews: 88,
-    time: "30-35 mins",
-    category: "Traditional",
-    image: "/images/vegetable-soup.jpeg",
-  },
-  {
-    id: "beans-plantain",
-    name: "Beans and Plantain",
-    description: "Slow-cooked honey beans paired with sweet fried plantain slices.",
-    price: "₦5,000",
-    rating: "4.5",
-    reviews: 54,
-    time: "20-25 mins",
-    category: "Traditional",
-    image: "/images/beans-plantain.jpeg",
-  }
-];
-
-
 export default function MenuPage() {
+  const [dishes, setDishes] = useState<any[]>([]);
+  const [loadingDishes, setLoadingDishes] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const { addToCart } = useCart();
   const [addedId, setAddedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchDishes() {
+      try {
+        const res = await fetch("/api/dishes");
+        const data = await res.json();
+        setDishes(data);
+      } catch (error) {
+        console.error("Failed to fetch dishes:", error);
+      } finally {
+        setLoadingDishes(false);
+      }
+    }
+    fetchDishes();
+  }, []);
 
   const handleAddToCart = useCallback((dish: any) => {
     const numericPrice = parseInt(dish.price.replace(/[^\d]/g, ""), 10);
@@ -232,7 +100,22 @@ export default function MenuPage() {
             </button>
           </div>
 
-          {filteredDishes.length > 0 ? (
+          {loadingDishes ? (
+            <div className="flex space-x-6 overflow-x-auto no-scrollbar -mx-6 px-6 pb-12">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="flex-shrink-0 w-[244px] animate-pulse">
+                  <div className="bg-white rounded-[44px] h-[450px] p-5">
+                    <div className="aspect-square w-full rounded-[32px] bg-gray-100 mb-5" />
+                    <div className="h-6 w-3/4 bg-gray-100 rounded-full mb-4" />
+                    <div className="space-y-2">
+                      <div className="h-3 w-full bg-gray-50 rounded-full" />
+                      <div className="h-3 w-1/2 bg-gray-50 rounded-full" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredDishes.length > 0 ? (
             <div className="flex space-x-6 overflow-x-auto no-scrollbar -mx-6 px-6 pb-12 snap-x">
               {filteredDishes.map((dish) => {
                 const isAdded = addedId === dish.id;

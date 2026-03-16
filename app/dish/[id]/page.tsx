@@ -11,45 +11,51 @@ import { useCart } from "@/lib/cartContext";
 import { useRouter, useParams } from "next/navigation";
 
 export default function DishDetailsPage() {
+  const [dish, setDish] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
   const router = useRouter();
   const params = useParams();
 
-  const dish = {
-    id: params.id as string || "smokey-jollof",
-    name: "Smokey Jollof Rice",
-    price: 7500,
-    rating: 4.9,
-    reviews: "120+",
-    image: "/images/jollof.png",
-    description: "Authentic firewood-smoked rice served with sweet dodo (fried plantains), moin-moin, and your choice of protein. A classic West African staple known for its deep orange hue and rich, smoky aroma.",
-    prepTime: "25-30 mins",
-    servingSize: "Single Portion",
-    ingredients: ["Long-grain Parboiled Rice", "Scotch Bonnet", "Tomato Paste", "Red Bell Peppers", "Smoked Paprika", "Palm Oil"],
-    nutrition: [
-      { label: "CALORIES", value: "650", color: "text-orange-500" },
-      { label: "PROTEIN", value: "28g", color: "text-emerald-500" },
-      { label: "CARBS", value: "85g", color: "text-sky-500" },
-      { label: "FAT", value: "18g", color: "text-rose-500" },
-    ]
-  };
+  useEffect(() => {
+    async function fetchDish() {
+      try {
+        const res = await fetch(`/api/dishes/${params.id}`);
+        const data = await res.json();
+        if (res.ok) {
+          setDish(data);
+        } else {
+          console.error("Dish not found");
+        }
+      } catch (error) {
+        console.error("Failed to fetch dish:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (params.id) fetchDish();
+  }, [params.id]);
 
-  // Adjust image based on ID for simulation
-  if (dish.id === "egusi-soup") {
-    dish.name = "Egusi Soup & Pounded Yam";
-    dish.image = "/images/egusi.png";
-    dish.price = 9000;
-  } else if (dish.id === "peppered-snail") {
-    dish.name = "Peppered Snail";
-    dish.image = "/images/snail.png";
-    dish.price = 8500;
-  } else if (dish.id === "grilled-croaker") {
-    dish.name = "Grilled Croaker Fish";
-    dish.image = "/images/croaker.png";
-    dish.price = 12500;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center">
+        <div className="h-12 w-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
   }
+
+  if (!dish) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8 text-center">
+        <h1 className="text-2xl font-serif font-black italic text-primary mb-4">Dish not found</h1>
+        <Button onClick={() => router.push("/menu")}>Back to Menu</Button>
+      </div>
+    );
+  }
+
+  const numericPrice = parseInt(dish.price, 10);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -70,7 +76,7 @@ export default function DishDetailsPage() {
         <div className="absolute bottom-10 left-8 z-20 text-white">
           <Badge className="bg-accent text-white border-none mb-4 py-1.5 px-4 rounded-xl flex items-center space-x-2">
             <Flame className="h-4 w-4 fill-current" />
-            <span className="text-xs font-black tracking-[0.2em]">CHEF&apos;S SPECIAL</span>
+            <span className="text-xs font-black tracking-[0.2em]">{dish.special || "REFINED CHOICE"}</span>
           </Badge>
           <h1 className="text-5xl font-serif font-black italic tracking-tight">{dish.name}</h1>
         </div>
@@ -78,7 +84,7 @@ export default function DishDetailsPage() {
 
       <main className="flex-1 -mt-6 bg-background rounded-t-[40px] px-8 pt-10 relative z-20 pb-40">
         <div className="flex justify-between items-center mb-8">
-          <p className="text-4xl font-serif font-black text-accent italic">₦{dish.price.toLocaleString()}</p>
+          <p className="text-4xl font-serif font-black text-accent italic">₦{numericPrice.toLocaleString()}</p>
           <div className="bg-accent/5 px-4 py-2 rounded-2xl flex items-center space-x-2 border border-accent/10">
             <Star className="h-4 w-4 text-accent fill-current" />
             <span className="text-sm font-black text-accent">{dish.rating} ({dish.reviews} reviews)</span>
@@ -107,7 +113,7 @@ export default function DishDetailsPage() {
         <section className="mb-12">
           <h2 className="text-xl font-serif font-black italic text-primary mb-6">Key Ingredients</h2>
           <div className="flex flex-wrap gap-2">
-            {dish.ingredients.map(ing => (
+            {dish.ingredients.map((ing: string) => (
               <span key={ing} className="px-5 py-3 rounded-2xl bg-white text-[11px] font-bold text-primary/80 shadow-sm border border-primary/5">
                 {ing}
               </span>
@@ -118,7 +124,7 @@ export default function DishDetailsPage() {
         <section className="mb-12">
           <h2 className="text-xl font-serif font-black italic text-primary mb-6">Nutritional Information</h2>
           <div className="grid grid-cols-4 gap-3">
-            {dish.nutrition.map(n => (
+            {dish.nutrition.map((n: any) => (
               <div key={n.label} className="bg-white p-4 rounded-2xl shadow-sm border border-primary/5 flex flex-col items-center">
                 <p className="text-[8px] font-black tracking-widest text-muted mb-2 uppercase">{n.label}</p>
                 <p className={cn("text-lg font-black italic", n.color)}>{n.value}</p>
@@ -158,7 +164,7 @@ export default function DishDetailsPage() {
                 addToCart({
                   id: dish.id,
                   name: dish.name,
-                  price: dish.price,
+                  price: numericPrice,
                   image: dish.image,
                 });
               }
@@ -188,4 +194,3 @@ export default function DishDetailsPage() {
 function cn(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
-
