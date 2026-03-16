@@ -70,7 +70,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background pb-32">
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden min-h-[65vh] flex flex-col justify-end px-8 pb-14 pt-20">
+      <section className="relative overflow-hidden min-h-[75vh] flex flex-col px-8 pb-14 pt-16">
         <Image 
           src="/images/hero.png"
           alt="Luxury Nigerian Dining"
@@ -86,9 +86,9 @@ export default function Home() {
         <div className="absolute top-10 -left-16 w-48 h-48 rounded-full bg-white/5 blur-2xl z-10" />
 
         {/* top bar */}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-8 pt-12 z-20">
+        <div className="relative flex items-center justify-between z-20 mb-12">
           <div>
-            <p className="text-white/40 text-[10px] font-black tracking-[0.3em] uppercase">Welcome to</p>
+            <p className="text-white/40 text-[10px] font-black tracking-[0.3em] uppercase mb-1">Welcome to</p>
             <h1 className="text-4xl font-serif font-black text-white italic tracking-tight">REFINED</h1>
           </div>
           <Link
@@ -99,7 +99,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="relative z-20">
+        <div className="relative z-20 mt-auto">
           <div className="inline-flex items-center space-x-2 bg-accent/20 border border-accent/30 rounded-full px-4 py-1.5 mb-6">
             <span className="h-1.5 w-1.5 bg-accent rounded-full animate-pulse" />
             <span className="text-accent text-[10px] font-black tracking-[0.2em]">LUXURY NIGERIAN DINING</span>
