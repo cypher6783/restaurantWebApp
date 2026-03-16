@@ -2,11 +2,33 @@
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Header } from "@/components/layout/Header";
-import { Mail, Lock, Eye, Wine, Users2, ChefHat } from "lucide-react";
+import { Card } from "@/components/ui/Card";
+import { Mail, Lock, Wine, Users2, ChefHat } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      localStorage.setItem("refined_user", JSON.stringify({
+        name: "Adesua Etomi",
+        email: email || "adesua@example.com",
+        initials: "AE"
+      }));
+      router.push("/");
+    }, 1200);
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F5F2] flex flex-col items-center px-8 py-12 relative overflow-hidden">
       {/* Decorative Icons background */}
@@ -29,13 +51,16 @@ export default function LoginPage() {
             <p className="text-muted text-sm font-medium">Sign in to your refined dining experience</p>
           </div>
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleLogin}>
             <div className="space-y-2">
               <label className="text-sm font-bold text-primary uppercase tracking-widest pl-1">Email Address</label>
               <Input 
                 type="email" 
                 placeholder="email@example.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 icon={<Mail className="h-5 w-5" />}
+                required
               />
             </div>
             
@@ -44,15 +69,22 @@ export default function LoginPage() {
               <Input 
                 type="password" 
                 placeholder="Enter your password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 icon={<Lock className="h-5 w-5" />}
+                required
               />
               <div className="text-right mt-1">
                 <Link href="#" className="text-xs font-bold text-primary/60 hover:text-accent tracking-wide uppercase">Forgot Password?</Link>
               </div>
             </div>
 
-            <Button className="w-full h-16 rounded-3xl text-lg font-bold shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90 mt-8">
-              Login
+            <Button 
+              type="submit"
+              disabled={loading}
+              className="w-full h-16 rounded-3xl text-lg font-bold shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90 mt-8"
+            >
+              {loading ? "Signing in..." : "Login"}
             </Button>
           </form>
           
@@ -74,12 +106,3 @@ export default function LoginPage() {
   );
 }
 
-function Card({ children, className }: { children: React.ReactNode, className?: string }) {
-  return (
-    <div className={cn("rounded-[40px] shadow-2xl shadow-primary/5", className)}>
-      {children}
-    </div>
-  );
-}
-
-const cn = (...classes: any[]) => classes.filter(Boolean).join(" ");

@@ -2,13 +2,33 @@
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Header } from "@/components/layout/Header";
 import { User, Mail, Lock, Phone, Wine, Users2, ChefHat, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      localStorage.setItem("refined_user", JSON.stringify({
+        name: name || "New Guest",
+        email: email || "guest@example.com",
+        initials: name ? name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "NG"
+      }));
+      router.push("/");
+    }, 1200);
+  };
 
   return (
     <div className="min-h-screen bg-[#F8F5F2] flex flex-col items-center px-8 py-12 relative overflow-hidden">
@@ -42,13 +62,16 @@ export default function RegisterPage() {
             <p className="text-muted text-sm font-medium">Create your refined dining profile</p>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleRegister}>
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] pl-1">Full Name</label>
               <Input 
                 type="text" 
                 placeholder="Adesua Etomi" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 icon={<User className="h-5 w-5" />}
+                required
               />
             </div>
 
@@ -57,7 +80,10 @@ export default function RegisterPage() {
               <Input 
                 type="email" 
                 placeholder="email@example.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 icon={<Mail className="h-5 w-5" />}
+                required
               />
             </div>
 
@@ -66,7 +92,10 @@ export default function RegisterPage() {
               <Input 
                 type="tel" 
                 placeholder="+234 800 000 0000" 
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 icon={<Phone className="h-5 w-5" />}
+                required
               />
             </div>
             
@@ -75,12 +104,19 @@ export default function RegisterPage() {
               <Input 
                 type="password" 
                 placeholder="Choose a strong password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 icon={<Lock className="h-5 w-5" />}
+                required
               />
             </div>
 
-            <Button className="w-full h-16 rounded-3xl text-lg font-bold shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90 mt-8">
-              Create Account
+            <Button 
+              type="submit"
+              disabled={loading}
+              className="w-full h-16 rounded-3xl text-lg font-bold shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90 mt-8"
+            >
+              {loading ? "Preparing your table..." : "Create Account"}
             </Button>
           </form>
           

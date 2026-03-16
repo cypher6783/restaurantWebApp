@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, UtensilsCrossed, ShoppingBag, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/lib/cartContext";
 
 const navItems = [
   { label: "HOME", icon: Home, href: "/" },
@@ -14,6 +15,7 @@ const navItems = [
 
 export function MobileNav() {
   const pathname = usePathname();
+  const { cartCount } = useCart();
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-t border-primary/5 pb-safe">
@@ -21,7 +23,8 @@ export function MobileNav() {
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
-          
+          const isCart = item.label === "CART";
+
           return (
             <Link
               key={item.href}
@@ -31,7 +34,14 @@ export function MobileNav() {
                 isActive ? "text-accent scale-110" : "text-muted hover:text-primary"
               )}
             >
-              <Icon className={cn("w-6 h-6", isActive && "fill-current")} />
+              <div className="relative">
+                <Icon className={cn("w-6 h-6", isActive && "fill-current")} />
+                {isCart && cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 h-4 w-4 bg-accent text-white text-[9px] font-black rounded-full flex items-center justify-center">
+                    {cartCount > 9 ? "9+" : cartCount}
+                  </span>
+                )}
+              </div>
               <span className="text-[10px] font-bold tracking-wider">{item.label}</span>
             </Link>
           );
@@ -40,3 +50,4 @@ export function MobileNav() {
     </nav>
   );
 }
+

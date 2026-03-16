@@ -3,19 +3,27 @@
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { Star, Clock, Minus, Plus, ShoppingBag, Flame, ChevronRight } from "lucide-react";
-import Image from "next/image";
+import { Star, Clock, Minus, Plus, ShoppingBag, Flame, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useCart } from "@/lib/cartContext";
+import { useRouter, useParams } from "next/navigation";
 
 export default function DishDetailsPage() {
   const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
+  const { addToCart } = useCart();
+  const router = useRouter();
+  const params = useParams();
 
   const dish = {
+    id: params.id as string || "smokey-jollof",
     name: "Smokey Jollof Rice",
     price: 7500,
     rating: 4.9,
     reviews: "120+",
+    image: "/images/jollof.png",
     description: "Authentic firewood-smoked rice served with sweet dodo (fried plantains), moin-moin, and your choice of protein. A classic West African staple known for its deep orange hue and rich, smoky aroma.",
     prepTime: "25-30 mins",
     servingSize: "Single Portion",
@@ -28,13 +36,35 @@ export default function DishDetailsPage() {
     ]
   };
 
+  // Adjust image based on ID for simulation
+  if (dish.id === "egusi-soup") {
+    dish.name = "Egusi Soup & Pounded Yam";
+    dish.image = "/images/egusi.png";
+    dish.price = 9000;
+  } else if (dish.id === "peppered-snail") {
+    dish.name = "Peppered Snail";
+    dish.image = "/images/snail.png";
+    dish.price = 8500;
+  } else if (dish.id === "grilled-croaker") {
+    dish.name = "Grilled Croaker Fish";
+    dish.image = "/images/croaker.png";
+    dish.price = 12500;
+  }
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="relative h-[45vh] w-full overflow-hidden bg-primary/20">
+      <div className="relative h-[45vh] w-full overflow-hidden bg-[#1B3C35]">
+        <Image 
+          src={dish.image}
+          alt={dish.name}
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
         {/* Header Overlay */}
         <Header showBack rightAction="share" className="absolute top-0 left-0 right-0 z-30 bg-transparent text-white" />
         
-        {/* Hero Image placeholder */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
         
         <div className="absolute bottom-10 left-8 z-20 text-white">
@@ -54,6 +84,7 @@ export default function DishDetailsPage() {
             <span className="text-sm font-black text-accent">{dish.rating} ({dish.reviews} reviews)</span>
           </div>
         </div>
+
 
         <section className="mb-10">
           <h2 className="text-xl font-serif font-black italic text-primary mb-4">Description</h2>
@@ -101,28 +132,52 @@ export default function DishDetailsPage() {
       <footer className="fixed bottom-0 left-0 right-0 p-8 bg-white/70 backdrop-blur-xl border-t border-primary/5 z-50 rounded-t-[40px] shadow-2xl">
         <div className="flex space-x-6 items-center">
           <div className="flex items-center space-x-6 bg-primary/5 p-2 rounded-3xl border border-primary/5">
-            <Button 
-              variant="subtle" 
-              size="icon" 
+            <Button
+              variant="subtle"
+              size="icon"
               className="h-12 w-12 rounded-2xl bg-white shadow-sm"
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
             >
               <Minus className="h-5 w-5 text-accent" />
             </Button>
             <span className="text-xl font-black italic w-6 text-center">{quantity}</span>
-            <Button 
-              variant="subtle" 
-              size="icon" 
+            <Button
+              variant="subtle"
+              size="icon"
               className="h-12 w-12 rounded-2xl bg-white shadow-sm"
               onClick={() => setQuantity(quantity + 1)}
             >
               <Plus className="h-5 w-5 text-accent" />
             </Button>
           </div>
-          
-          <Button className="flex-1 h-16 rounded-[28px] text-lg font-bold shadow-2xl shadow-accent/40 flex items-center space-x-3">
-            <ShoppingBag className="h-6 w-6" />
-            <span>Add to Cart</span>
+
+          <Button
+            className={`flex-1 h-16 rounded-[28px] text-lg font-bold shadow-2xl shadow-accent/40 flex items-center space-x-3 transition-all ${added ? "bg-emerald-500 shadow-emerald-500/30" : ""}`}
+            onClick={() => {
+              for (let i = 0; i < quantity; i++) {
+                addToCart({
+                  id: dish.id,
+                  name: dish.name,
+                  price: dish.price,
+                  image: dish.image,
+                });
+              }
+              setAdded(true);
+              setTimeout(() => router.push("/cart"), 900);
+            }}
+
+          >
+            {added ? (
+              <>
+                <CheckCircle2 className="h-6 w-6" />
+                <span>Added to Cart!</span>
+              </>
+            ) : (
+              <>
+                <ShoppingBag className="h-6 w-6" />
+                <span>Add to Cart</span>
+              </>
+            )}
           </Button>
         </div>
       </footer>
@@ -133,3 +188,4 @@ export default function DishDetailsPage() {
 function cn(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
+
