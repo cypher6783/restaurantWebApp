@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FDFCFB;
+  --foreground: #1A2E2A;
+  --primary: #1A2E2A;
+  --accent: #C5A059;
+  --muted: #8E918F;
+  --card: #FFFFFF;
+  --border: rgba(26, 46, 42, 0.05);
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40;
+  }
+  
+  .premium-gradient {
+    background: linear-gradient(135deg, #1A2E2A 0%, #2A4842 100%);
+  }
+  
+  .text-luxury {
+    @apply font-serif italic tracking-tight;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: Refined Restaurant API
+  description: Production-grade backend for the Refined Restaurant application.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string }
+        role: { type: string, enum: [USER, ADMIN] }
+    MenuItem:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        price: { type: number }
+        category: { type: string }
+        image: { type: string }
+    Order:
+      type: object
+      properties:
+        id: { type: string }
+        status: { type: string }
+        totalAmount: { type: number }
+        createdAt: { type: string, format: date-time }
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string }
+                password: { type: string }
+      responses:
+        201:
+          description: Created
+  /auth/login:
+    post:
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        200:
+          description: OK
+  /menu:
+    get:
+      summary: Get all menu items
+      responses:
+        200:
+          description: OK
+  /orders:
+    post:
+      summary: Create a new order
+      security:
+        - bearerAuth: []
+      responses:
+        201:
+          description: Created
