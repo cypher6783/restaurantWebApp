@@ -1,5 +1,6 @@
 "use client";
 
+<<<<<<< HEAD:app/page.tsx
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -67,13 +68,29 @@ const features = [
     bg: "bg-accent/10",
   },
 ];
+=======
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/page.tsx
 
 export default function Home() {
   const router = useRouter();
 
+<<<<<<< HEAD
   // No automatic redirect to allow manual navigation
+=======
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/menu');
+    } else {
+      router.push('/login');
+    }
+  }, [router]);
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 
   return (
+<<<<<<< HEAD:app/page.tsx
     <div className="min-h-screen bg-background pb-32">
       {/* ── Hero ── */}
       <section className="relative overflow-hidden min-h-[75vh] flex flex-col px-8 pb-14 pt-16">
@@ -238,5 +255,11 @@ export default function Home() {
 
       <MobileNav />
     </div>
+=======
+    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-background">
+      <h1 className="text-6xl font-serif text-primary mb-4 italic">REFINED</h1>
+      <p className="text-xl font-sans text-accent">Luxury Nigerian Dining</p>
+    </main>
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/page.tsx
   );
 }

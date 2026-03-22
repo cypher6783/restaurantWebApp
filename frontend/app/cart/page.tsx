@@ -6,11 +6,20 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Trash2, Plus, Minus, ChevronRight, ShoppingBag } from "lucide-react";
 import Link from "next/link";
+<<<<<<< HEAD:app/cart/page.tsx
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useCart } from "@/lib/cartContext";
+<<<<<<< HEAD
 import { orderApi } from "@/lib/api";
+=======
+=======
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { orderApi } from "@/lib/api";
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/cart/page.tsx
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 
 export default function CartPage() {
   const { items, cartTotal, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -21,6 +30,7 @@ export default function CartPage() {
   const deliveryFee = items.length > 0 ? 1500 : 0;
   const total = cartTotal + deliveryFee;
 
+<<<<<<< HEAD
   const handleCheckout = () => {
     if (items.length === 0) return;
     setShowPaystack(true);
@@ -48,6 +58,29 @@ export default function CartPage() {
     } finally {
       setIsPaying(false);
       setShowPaystack(false);
+=======
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const handleCheckout = async () => {
+    setIsLoading(true);
+    try {
+      const orderData = {
+        items: items.map(item => ({
+          menuItemId: item.id.toString(), // Ensure string ID
+          quantity: item.quantity
+        }))
+      };
+      const response = await orderApi.create(orderData);
+      // Redirect to order status page (if we have one) or clear cart
+      alert(`Order created! Order ID: ${response.data.id}`);
+      setItems([]);
+      router.push('/menu');
+    } catch (err: any) {
+      alert(`Order failed: ${err.message}`);
+    } finally {
+      setIsLoading(false);
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
     }
   };
 
@@ -58,6 +91,7 @@ export default function CartPage() {
       <main className="px-6 py-8">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-xs font-black tracking-[0.2em] text-accent uppercase">Cart Details ({items.length})</h2>
+<<<<<<< HEAD:app/cart/page.tsx
           {items.length > 0 && (
             <button
               onClick={clearCart}
@@ -124,6 +158,48 @@ export default function CartPage() {
                         </button>
                       </div>
                     </div>
+=======
+          <button className="text-xs font-bold text-muted hover:text-rose-500 uppercase tracking-widest transition-colors" onClick={() => setItems([])}>Clear All</button>
+        </div>
+
+        <section className="space-y-6">
+          {items.map((item) => (
+            <Card key={item.id} className="p-4 rounded-3xl border-none shadow-sm relative group overflow-hidden bg-white">
+              <div className="flex space-x-5">
+                <div className="h-28 w-28 rounded-2xl bg-primary/5 overflow-hidden flex-shrink-0">
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                </div>
+                
+                <div className="flex-1 flex flex-col justify-between py-1">
+                  <div>
+                    <h3 className="text-lg font-serif font-black italic text-primary">{item.name}</h3>
+                    <p className="text-lg font-serif font-black text-accent italic mt-1">₦{item.price.toLocaleString()}</p>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center space-x-4 bg-primary/5 px-2 py-1 rounded-2xl border border-primary/5">
+                      <button 
+                        className="h-8 w-8 rounded-full bg-white shadow-sm flex items-center justify-center text-accent hover:scale-110 active:scale-95 transition-all"
+                        onClick={() => setItems(items.map(i => i.id === item.id ? { ...i, quantity: Math.max(1, i.quantity - 1) } : i))}
+                      >
+                        <Minus className="h-3.5 w-3.5" />
+                      </button>
+                      <span className="text-sm font-black italic w-4 text-center">{item.quantity}</span>
+                      <button 
+                        className="h-8 w-8 rounded-full bg-white shadow-sm flex items-center justify-center text-accent hover:scale-110 active:scale-95 transition-all"
+                        onClick={() => setItems(items.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i))}
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+
+                    <button 
+                      className="p-2 text-muted hover:text-rose-500 transition-colors"
+                      onClick={() => setItems(items.filter(i => i.id !== item.id))}
+                    >
+                      <Trash2 className="h-5 w-5" />
+                    </button>
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/cart/page.tsx
                   </div>
                 </Card>
               ))}
@@ -159,6 +235,7 @@ export default function CartPage() {
         )}
       </main>
 
+<<<<<<< HEAD
       {/* Mock Paystack Modal */}
       {showPaystack && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center px-6">
@@ -224,8 +301,33 @@ export default function CartPage() {
               <p className="text-[9px] font-bold text-muted uppercase tracking-[0.2em]">Secured by Paystack</p>
             </div>
           </Card>
+=======
+<<<<<<< HEAD:app/cart/page.tsx
+      {items.length > 0 && (
+        <div className="fixed bottom-24 left-0 right-0 px-6 z-40">
+          <Link href="/checkout">
+            <Button className="w-full h-20 rounded-[30px] shadow-2xl shadow-accent/40 text-xl font-bold flex items-center justify-center space-x-3">
+              <span>Proceed to Checkout</span>
+              <ChevronRight className="h-6 w-6" />
+            </Button>
+          </Link>
+          <p className="text-center text-[10px] font-bold text-muted mt-4 uppercase tracking-[0.2em]">Estimated delivery time: 30 - 45 mins</p>
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
         </div>
       )}
+=======
+      <div className="fixed bottom-24 left-0 right-0 px-6 z-40">
+        <Button 
+          className="w-full h-20 rounded-[30px] shadow-2xl shadow-accent/40 text-xl font-bold flex items-center justify-center space-x-3"
+          onClick={handleCheckout}
+          disabled={isLoading || items.length === 0}
+        >
+          <span>{isLoading ? 'Processing...' : 'Proceed to Checkout'}</span>
+          <ChevronRight className="h-6 w-6" />
+        </Button>
+        <p className="text-center text-[10px] font-bold text-muted mt-4 uppercase tracking-[0.2em]">Estimated delivery time: 30 - 45 mins</p>
+      </div>
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/cart/page.tsx
 
       <div className="fixed bottom-24 left-0 right-0 px-6 z-40">
         <Button 

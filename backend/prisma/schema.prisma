@@ -21,6 +21,7 @@ enum OrderStatus {
 }
 
 model User {
+<<<<<<< HEAD
   id           String        @id @default(uuid())
   name         String
   email        String        @unique
@@ -47,6 +48,15 @@ model Reservation {
   guests    Int
   special   String?
   status    String   @default("PENDING")
+=======
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String?
+  password  String
+  role      Role     @default(USER)
+  orders    Order[]
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -61,11 +71,15 @@ model MenuItem {
   image       String?
   special     String?
   orderItems  OrderItem[]
+<<<<<<< HEAD
   favorites   Favorite[]
+=======
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
 
+<<<<<<< HEAD
 model Favorite {
   id         String   @id @default(uuid())
   userId     String
@@ -77,6 +91,8 @@ model Favorite {
   @@unique([userId, menuItemId])
 }
 
+=======
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 model Order {
   id          String      @id @default(uuid())
   userId      String

@@ -6,10 +6,28 @@ import { User, Mail, Lock, Phone, Wine, Users2, ChefHat, ArrowLeft } from "lucid
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+<<<<<<< HEAD
 import { authApi } from "@/lib/api";
 import { Card } from "@/components/ui/Card";
 
 export default function RegisterPage() {
+=======
+<<<<<<< HEAD:app/register/page.tsx
+=======
+import { authApi } from "@/lib/api";
+import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/Card";
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/register/page.tsx
+
+export default function RegisterPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -30,6 +48,23 @@ export default function RegisterPage() {
       router.push('/menu');
     } catch (err: any) {
       setError(err.message || "Registration failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await authApi.register({ name, email, phone, password });
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      router.push('/menu');
+    } catch (err: any) {
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -67,9 +102,24 @@ export default function RegisterPage() {
             <p className="text-muted text-sm font-medium">Create your refined dining profile</p>
           </div>
 
+<<<<<<< HEAD
           <form className="space-y-4" onSubmit={handleRegister}>
             {error && <p className="text-rose-500 text-xs font-bold text-center uppercase tracking-widest">{error}</p>}
             
+=======
+<<<<<<< HEAD:app/register/page.tsx
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] font-black tracking-widest text-center uppercase">
+              {error}
+            </div>
+          )}
+
+          <form className="space-y-4" onSubmit={handleRegister}>
+=======
+          <form className="space-y-4" onSubmit={handleRegister}>
+            {error && <p className="text-rose-500 text-xs font-bold text-center uppercase tracking-widest">{error}</p>}
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/register/page.tsx
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] pl-1">Full Name</label>
               <Input 
@@ -78,6 +128,11 @@ export default function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 icon={<User className="h-5 w-5" />}
+<<<<<<< HEAD:app/register/page.tsx
+=======
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/register/page.tsx
                 required
               />
             </div>
@@ -90,6 +145,11 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 icon={<Mail className="h-5 w-5" />}
+<<<<<<< HEAD:app/register/page.tsx
+=======
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/register/page.tsx
                 required
               />
             </div>
@@ -102,6 +162,15 @@ export default function RegisterPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 icon={<Phone className="h-5 w-5" />}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:app/register/page.tsx
+                required
+=======
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/register/page.tsx
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
               />
             </div>
             
@@ -113,6 +182,11 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 icon={<Lock className="h-5 w-5" />}
+<<<<<<< HEAD:app/register/page.tsx
+=======
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+>>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/register/page.tsx
                 required
               />
             </div>

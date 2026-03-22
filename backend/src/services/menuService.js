@@ -1,5 +1,6 @@
 const prisma = require('../config/prisma');
 
+<<<<<<< HEAD
 // Regex to detect a standard UUID (e.g. "a1b2c3d4-e5f6-...")
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -19,6 +20,15 @@ const getMenuItemById = async (id) => {
   return await prisma.menuItem.findFirst({
     where: { name: { contains: nameGuess, mode: 'insensitive' } },
   });
+=======
+const getAllMenuItems = async (category) => {
+  const where = category && category !== 'All' ? { category } : {};
+  return await prisma.menuItem.findMany({ where });
+};
+
+const getMenuItemById = async (id) => {
+  return await prisma.menuItem.findUnique({ where: { id } });
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 };
 
 const createMenuItem = async (data) => {

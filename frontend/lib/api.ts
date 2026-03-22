@@ -1,5 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
+<<<<<<< HEAD
 // ── Simple in-memory GET cache (TTL: 30 seconds) ──────────────────────────────
 const cache = new Map<string, { data: unknown; expiresAt: number }>();
 const CACHE_TTL_MS = 30_000;
@@ -34,6 +35,10 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
     const cached = getCached(cacheKey);
     if (cached) return cached;
   }
+=======
+export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 
   const headers = {
     'Content-Type': 'application/json',
@@ -49,6 +54,7 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
   const data = await response.json();
 
   if (!response.ok) {
+<<<<<<< HEAD
     throw new Error('Something went wrong');
   }
 
@@ -59,6 +65,14 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
 };
 
 
+=======
+    throw new Error(data.message || 'Something went wrong');
+  }
+
+  return data;
+};
+
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 export const authApi = {
   login: (credentials: any) => apiFetch('/auth/login', { method: 'POST', body: JSON.stringify(credentials) }),
   register: (userData: any) => apiFetch('/auth/register', { method: 'POST', body: JSON.stringify(userData) }),
@@ -75,6 +89,7 @@ export const orderApi = {
   getMyOrders: () => apiFetch('/orders/my-orders'),
   getOne: (id: string) => apiFetch(`/orders/${id}`),
 };
+<<<<<<< HEAD
 
 export const reservationApi = {
   create: (reservationData: any) => apiFetch('/reservations', { method: 'POST', body: JSON.stringify(reservationData) }),
@@ -87,3 +102,5 @@ export const userApi = {
   getFavorites: () => apiFetch('/users/favorites'),
   toggleFavorite: (menuItemId: string) => apiFetch('/users/favorites/toggle', { method: 'POST', body: JSON.stringify({ menuItemId }) }),
 };
+=======
+>>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
