@@ -24,7 +24,7 @@ const menuSchema = z.object({
 
 const orderSchema = z.object({
   items: z.array(z.object({
-    id: z.string(),
+    menuItemId: z.string(),
     quantity: z.number().int().positive(),
     price: z.number().positive()
   })),

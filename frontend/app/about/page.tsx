@@ -1,7 +1,7 @@
 "use client";
 
 import { Header } from "@/components/layout/Header";
-import { MobileNav } from "@/components/layout/MobileNav";
+
 import Image from "next/image";
 import { Star, Award, Users, Utensils } from "lucide-react";
 
@@ -88,7 +88,7 @@ export default function AboutPage() {
         </section>
       </main>
 
-      <MobileNav />
+      
     </div>
   );
 }

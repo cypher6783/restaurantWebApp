@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
-import { userApi } from "@/lib/api";
+import { userApi } from "@/lib/apiConnect";
 import { User, Mail, Phone, Lock, Save, Loader2, CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 

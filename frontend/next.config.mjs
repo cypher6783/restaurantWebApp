@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
+// Force restart 1.0.1
 const nextConfig = {
-<<<<<<< HEAD
   compress: true,
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -34,9 +34,6 @@ const nextConfig = {
       },
     ];
   },
-=======
-  /* config options here */
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 };
 
 export default nextConfig;

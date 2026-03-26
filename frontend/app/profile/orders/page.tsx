@@ -1,7 +1,7 @@
 "use client";
 
 import { Header } from "@/components/layout/Header";
-import { MobileNav } from "@/components/layout/MobileNav";
+
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ChevronRight, Clock, MapPin, Receipt, Utensils } from "lucide-react";
@@ -99,7 +99,7 @@ export default function OrderHistoryPage() {
         </section>
       </main>
 
-      <MobileNav />
+      
     </div>
   );
 }

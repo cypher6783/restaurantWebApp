@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+
 import { CalendarDays, Users, Clock, CheckCircle2, Utensils, Wine } from "lucide-react";
-import { reservationApi } from "@/lib/api";
+import { reservationApi } from "@/lib/apiConnect";
 
 const timeSlots = ["18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00"];
 const guestOptions = [1, 2, 3, 4, 5, "6+"];
@@ -263,6 +264,7 @@ export default function ReservationsPage() {
            <Utensils className="h-6 w-6 text-primary" />
         </div>
       </main>
+      
     </div>
   );
 }

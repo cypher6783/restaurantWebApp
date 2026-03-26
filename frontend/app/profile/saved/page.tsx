@@ -6,7 +6,7 @@ import { Heart, Search, Star, Flame, ShoppingBag, CheckCircle2 } from "lucide-re
 import { useState, useEffect, useCallback } from "react";
 import { useCart } from "@/lib/cartContext";
 import { cn, formatCurrency } from "@/lib/utils";
-import { userApi } from "@/lib/api";
+import { userApi } from "@/lib/apiConnect";
 
 // Skeleton card for loading state
 function SavedDishSkeleton() {

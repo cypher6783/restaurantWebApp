@@ -1,19 +1,11 @@
 {
   "compilerOptions": {
-<<<<<<< HEAD:tsconfig.json
     "target": "ES2020",
-<<<<<<< HEAD
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-=======
-=======
-    "target": "ES2017",
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/tsconfig.json
-    "lib": ["dom", "dom.iterable", "esnext"],
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -35,15 +27,7 @@
       {
         "name": "next"
       }
-<<<<<<< HEAD
     ]
-=======
-    ],
-    "paths": {
-      "@/*": ["./*"],
-      "prisma/config": ["./backend/node_modules/prisma/config.js"]
-    }
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
   },
   "include": [
     "**/*.ts",

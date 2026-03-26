@@ -5,10 +5,11 @@ import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Check, Clock, Utensils, Bike, ChevronRight, Plus, Bell, ShoppingBag, User, Star, ChefHat, CheckCircle2, X } from "lucide-react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
-import { orderApi } from "@/lib/api";
+import { orderApi } from "@/lib/apiConnect";
 import { cn, formatCurrency } from "@/lib/utils";
 
 const orderSteps = [
@@ -89,7 +90,8 @@ export default function OrderSuccessPage({ params }: { params: Promise<{ id: str
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFCF9] pb-20 relative">
+    <>
+      <div className="min-h-screen bg-[#FDFCF9] pb-20 relative">
       <header className="px-8 pt-8 flex justify-between items-center bg-[#FDFCF9]">
         <h1 className="text-2xl font-serif italic font-black text-[#1B3C35] tracking-tight">Refined Kitchen</h1>
         <div className="flex items-center space-x-6">
@@ -298,5 +300,7 @@ export default function OrderSuccessPage({ params }: { params: Promise<{ id: str
          <p className="text-white/40 text-[10px] font-black tracking-[0.5em] uppercase">Luxury Nigerian Dining</p>
       </footer>
     </div>
+    
+  </>
   );
 }

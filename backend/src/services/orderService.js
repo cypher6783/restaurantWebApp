@@ -8,7 +8,7 @@ const createOrder = async (userId, items, totalAmount) => {
       totalAmount,
       items: {
         create: items.map(item => ({
-          menuItemId: item.id,
+          menuItemId: item.menuItemId,
           quantity: item.quantity,
           price: item.price
         }))

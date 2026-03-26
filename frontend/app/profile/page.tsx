@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MobileNav } from "@/components/layout/MobileNav";
+
 import { useCart } from "@/lib/cartContext";
 import {
   ChevronRight,
@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { userApi, orderApi } from "@/lib/api";
+import { userApi, orderApi } from "@/lib/apiConnect";
 
 // Shimmer skeleton for profile header + stats
 function ProfileSkeleton() {
@@ -147,7 +147,7 @@ export default function ProfilePage() {
   if (loading) return (
     <div className="min-h-screen bg-background pb-32">
       <ProfileSkeleton />
-      <MobileNav />
+      
     </div>
   );
 
@@ -233,7 +233,7 @@ export default function ProfilePage() {
         </button>
       </main>
 
-      <MobileNav />
+      
     </div>
   );
 }

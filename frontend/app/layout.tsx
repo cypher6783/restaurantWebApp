@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cartContext";
+import { BottomNav } from "@/components/layout/BottomNav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,22 +27,9 @@ export const metadata: Metadata = {
     description: "Handcrafted flavours rooted in tradition, elevated to perfection.",
     url: "https://refined-restaurant.com",
     siteName: "REFINED",
-    images: [
-      {
-        url: "/images/hero.png",
-        width: 1200,
-        height: 630,
-        alt: "Luxury Nigerian Dining",
-      },
-    ],
+    images: [{ url: "/images/hero.png", width: 1200, height: 630, alt: "Luxury Nigerian Dining" }],
     locale: "en_NG",
     type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "REFINED | Luxury Nigerian Dining",
-    description: "The finest Nigerian delicacies, delivered with elegance.",
-    images: ["/images/hero.png"],
   },
 };
 
@@ -51,16 +39,14 @@ export const viewport = {
   maximumScale: 5,
 };
 
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
-        <CartProvider>{children}</CartProvider>
+        <CartProvider>
+          {children}
+          <BottomNav />
+        </CartProvider>
       </body>
     </html>
   );

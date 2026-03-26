@@ -8,12 +8,9 @@
     "dev": "nodemon src/index.js",
     "test": "jest --detectOpenHandles"
   },
-<<<<<<< HEAD
   "prisma": {
     "seed": "node prisma/seed.js"
   },
-=======
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -22,17 +19,11 @@
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
     "bcryptjs": "^3.0.3",
-<<<<<<< HEAD
     "compression": "^1.8.1",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-rate-limit": "^8.3.1",
-=======
-    "cors": "^2.8.6",
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1",
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.20.0",
     "socket.io": "^4.8.3",

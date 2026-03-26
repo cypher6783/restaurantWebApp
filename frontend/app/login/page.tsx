@@ -5,14 +5,9 @@ import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 import { Mail, Lock, Wine, Users2, ChefHat } from "lucide-react";
 import Link from "next/link";
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD:app/login/page.tsx
-import { useRouter } from "next/navigation";
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { authApi } from "@/lib/api";
+import { authApi } from "@/lib/apiConnect";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,40 +30,7 @@ export default function LoginPage() {
     } catch (err: any) {
       setError(err.message || "Login failed");
     } finally {
-<<<<<<< HEAD
       setIsLoading(false);
-=======
-      setLoading(false);
-=======
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { authApi } from "@/lib/api";
-import { cn } from "@/lib/utils";
-import { Card } from "@/components/ui/Card";
-
-export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
-
-    try {
-      const response = await authApi.login({ email, password });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      router.push('/menu');
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/login/page.tsx
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
     }
   };
 
@@ -94,7 +56,6 @@ export default function LoginPage() {
             <p className="text-muted text-sm font-medium">Sign in to your refined dining experience</p>
           </div>
 
-<<<<<<< HEAD
           <form className="space-y-6" onSubmit={handleLogin}>
             {error && (
               <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-xs font-bold text-center animate-shake uppercase tracking-widest">
@@ -102,20 +63,6 @@ export default function LoginPage() {
               </div>
             )}
 
-=======
-<<<<<<< HEAD:app/login/page.tsx
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-xs font-bold text-center animate-shake">
-              {error}
-            </div>
-          )}
-
-          <form className="space-y-6" onSubmit={handleLogin}>
-=======
-          <form className="space-y-6" onSubmit={handleLogin}>
-            {error && <p className="text-rose-500 text-xs font-bold text-center uppercase tracking-widest">{error}</p>}
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/login/page.tsx
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
             <div className="space-y-2">
               <label className="text-sm font-bold text-primary uppercase tracking-widest pl-1">Email Address</label>
               <Input 
@@ -124,11 +71,6 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 icon={<Mail className="h-5 w-5" />}
-<<<<<<< HEAD:app/login/page.tsx
-=======
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/login/page.tsx
                 required
               />
             </div>
@@ -141,11 +83,6 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 icon={<Lock className="h-5 w-5" />}
-<<<<<<< HEAD:app/login/page.tsx
-=======
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/login/page.tsx
                 required
               />
               <div className="text-right mt-1">
@@ -179,13 +116,3 @@ export default function LoginPage() {
     </div>
   );
 }
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD:app/login/page.tsx
-=======
-    </div>
-  );
-}
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/login/page.tsx
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45

@@ -3,36 +3,21 @@
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-<<<<<<< HEAD
 import { Star, Clock, Minus, Plus, ShoppingBag, Flame, CheckCircle2, Heart } from "lucide-react";
-=======
-import { Star, Clock, Minus, Plus, ShoppingBag, Flame, CheckCircle2 } from "lucide-react";
+
 import Link from "next/link";
-<<<<<<< HEAD:app/dish/[id]/page.tsx
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useCart } from "@/lib/cartContext";
-<<<<<<< HEAD
-import { menuApi, userApi } from "@/lib/api";
+import { menuApi, userApi } from "@/lib/apiConnect";
 import { cn, formatCurrency } from "@/lib/utils";
 import { dishes as localDishes } from "@/lib/data";
-=======
-import { useRouter, useParams } from "next/navigation";
-=======
-import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { menuApi } from "@/lib/api";
-import { cn, formatCurrency } from "@/lib/utils";
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/dish/[id]/page.tsx
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 
 export default function DishDetailsPage() {
   const [dish, setDish] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-<<<<<<< HEAD:app/dish/[id]/page.tsx
   const [added, setAdded] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [favLoading, setFavLoading] = useState(false);
@@ -78,7 +63,7 @@ export default function DishDetailsPage() {
     const checkFavorite = async () => {
       try {
         const favRes = await userApi.getFavorites();
-        const favIds = favRes.data.map((f: any) => f.menuItem?.id || f.menuItemId);
+        const favIds = (favRes.data || []).map((f: any) => f.menuItem?.id || f.menuItemId);
         if (id && favIds.includes(id as string)) setIsFavorite(true);
       } catch {}
     };
@@ -98,10 +83,6 @@ export default function DishDetailsPage() {
     }
   };
 
-  if (isLoading) return <div className="min-h-screen flex items-center justify-center font-serif italic text-primary">Preparing the recipe...</div>;
-  if (!dish) return <div className="min-h-screen flex items-center justify-center font-serif italic text-primary">Dish not found.</div>;
-
-<<<<<<< HEAD
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
       addToCart({
@@ -115,46 +96,13 @@ export default function DishDetailsPage() {
     setAdded(true);
     setTimeout(() => router.push("/cart"), 900);
   };
-=======
-  if (!dish) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8 text-center">
-        <h1 className="text-2xl font-serif font-black italic text-primary mb-4">Dish not found</h1>
-        <Button onClick={() => router.push("/menu")}>Back to Menu</Button>
-      </div>
-    );
-  }
-
-  const numericPrice = parseInt(dish.price, 10);
-=======
-  const [dish, setDish] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const { id } = useParams();
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchDish = async () => {
-      setIsLoading(true);
-      try {
-        const response = await menuApi.getOne(id as string);
-        setDish(response.data);
-      } catch (err) {
-        console.error("Failed to fetch dish", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (id) fetchDish();
-  }, [id]);
 
   if (isLoading) return <div className="min-h-screen flex items-center justify-center font-serif italic text-primary">Preparing the recipe...</div>;
   if (!dish) return <div className="min-h-screen flex items-center justify-center font-serif italic text-primary">Dish not found.</div>;
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/dish/[id]/page.tsx
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <>
+      <div className="min-h-screen bg-background flex flex-col">
       <div className="relative h-[45vh] w-full overflow-hidden bg-[#1B3C35]">
         <Image 
           src={dish.imageUrl || dish.image}
@@ -192,22 +140,10 @@ export default function DishDetailsPage() {
 
       <main className="flex-1 -mt-6 bg-background rounded-t-[40px] px-8 pt-10 relative z-20 pb-40">
         <div className="flex justify-between items-center mb-8">
-<<<<<<< HEAD
           <p className="text-4xl font-serif font-black text-accent italic">{formatCurrency(dish.price)}</p>
           <div className="bg-accent/5 px-4 py-2 rounded-2xl flex items-center space-x-2 border border-accent/10 shadow-sm">
             <Star className="h-4 w-4 text-accent fill-current" />
             <span className="text-sm font-black text-accent">{dish.rating || "4.9"} ({dish.reviews || 0} reviews)</span>
-=======
-<<<<<<< HEAD:app/dish/[id]/page.tsx
-          <p className="text-4xl font-serif font-black text-accent italic">₦{numericPrice.toLocaleString()}</p>
-          <div className="bg-accent/5 px-4 py-2 rounded-2xl flex items-center space-x-2 border border-accent/10">
-=======
-          <p className="text-4xl font-serif font-black text-accent italic">{formatCurrency(dish.price)}</p>
-          <div className="bg-accent/5 px-4 py-2 rounded-2xl flex items-center space-x-2 border border-accent/10 shadow-sm">
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/dish/[id]/page.tsx
-            <Star className="h-4 w-4 text-accent fill-current" />
-            <span className="text-sm font-black text-accent">{dish.rating} ({dish.reviews || 0} reviews)</span>
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
           </div>
         </div>
 
@@ -244,25 +180,12 @@ export default function DishDetailsPage() {
         <section className="mb-12">
           <h2 className="text-xl font-serif font-black italic text-primary mb-6">Nutritional Information</h2>
           <div className="grid grid-cols-4 gap-3">
-<<<<<<< HEAD
             {[
               { label: "CALORIES", value: dish.calories || "650", color: "text-orange-500" },
               { label: "PROTEIN", value: dish.protein || "28g", color: "text-emerald-500" },
               { label: "CARBS", value: dish.carbs || "85g", color: "text-sky-500" },
               { label: "FAT", value: dish.fat || "18g", color: "text-rose-500" },
             ].map((n: { label: string, value: string, color: string }) => (
-=======
-<<<<<<< HEAD:app/dish/[id]/page.tsx
-            {dish.nutrition.map((n: any) => (
-=======
-            {[
-              { label: "CALORIES", value: "650", color: "text-orange-500" },
-              { label: "PROTEIN", value: "28g", color: "text-emerald-500" },
-              { label: "CARBS", value: "85g", color: "text-sky-500" },
-              { label: "FAT", value: "18g", color: "text-rose-500" },
-            ].map((n: { label: string, value: string, color: string }) => (
->>>>>>> eadd8ba (Refactor: Restructure project into frontend/ and backend/, and polish UI/UX):frontend/app/dish/[id]/page.tsx
->>>>>>> acce792a55a573730087bf94e57f5f0608dd3e45
               <div key={n.label} className="bg-white p-4 rounded-2xl shadow-sm border border-primary/5 flex flex-col items-center">
                 <p className="text-[8px] font-black tracking-widest text-muted mb-2 uppercase">{n.label}</p>
                 <p className={cn("text-lg font-black italic", n.color)}>{n.value}</p>
@@ -317,5 +240,7 @@ export default function DishDetailsPage() {
         </div>
       </footer>
     </div>
+    
+  </>
   );
 }
