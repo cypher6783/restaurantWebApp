@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:5001/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:5001/api';
 
 // ── Simple in-memory GET cache (TTL: 30 seconds) ──────────────────────────────
 const cache = new Map<string, { data: unknown; expiresAt: number }>();
